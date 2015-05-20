@@ -49,6 +49,14 @@ begin
       t.pattern = FileList['spec/**/*_spec.rb']
     end
 
+    # Running all tests takes too long. It pushes us up right against the time limit,
+    # so we are going to see many builds that fail for exceeding the build time if
+    # we run all the tests.
+    desc "Run only functional and unit tests in appveyor"
+    RSpec::Core::RakeTask.new(:appveyor) do |t|
+      t.pattern = FileList['spec/{functional,unit}/**/*_spec.rb']
+    end
+
     desc "Print Specdoc for all specs"
     RSpec::Core::RakeTask.new(:doc) do |t|
       t.rspec_opts = ["--format", "specdoc", "--dry-run"]
